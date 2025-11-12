@@ -1,715 +1,350 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>LEVEL 2⁵</title>
-
     <!-- Carga de Tailwind CSS y Google Fonts -->
-
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-
     <!-- Librería para leer el CSV (Google Sheets) -->
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-
     <style>
-
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-
         /* Estilo para los iframes (RSVP) para que sean responsivos */
-
         .iframe-container {
-
             position: relative;
-
             overflow: hidden;
-
             width: 100%;
-
             padding-top: 150%; /* Aspect ratio alto para formularios largos */
-
         }
-
         .iframe-container iframe {
-
             position: absolute;
-
             top: 0;
-
             left: 0;
-
             width: 100%;
-
             height: 100%;
-
             border: 0;
-
         }
-
     </style>
-
 </head>
-
 <body class="bg-slate-900 text-slate-200 py-12 px-4 md:px-8">
-
-
 
     <div class="max-w-2xl mx-auto">
 
-
-
         <!-- Título principal -->
-
         <h1 class="text-5xl md:text-6xl font-black text-center mb-10 relative">
-
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">
-
                 LEVEL 2
-
             </span>
-
             <!-- Superíndice (Exponente) -->
-
             <span class="absolute text-2xl font-black ml-1 -top-2 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">
-
                 5
-
             </span>
-
         </h1>
 
-
-
         <!-- ==================================== -->
-
-        <!-- CAJA DE INTRODUCCIÓN (ACTUALIZADO) -->
-
+        <!-- CAJA DE INTRODUCCIÓN -->
         <!-- ==================================== -->
-
         <div class="bg-slate-800 rounded-2xl p-6 mb-6 shadow-lg">
-
             <h2 class="text-3xl font-bold text-amber-400 mb-3">¡Lo primero!</h2>
-
             <p class="text-slate-300 text-lg leading-relaxed mb-5">
-
                 Sean bienvenidos, no olviden firmar por aquí al menos una vez (y no <i>muchas</i> a ser posible :D)
-
             </p>
-
-            <!-- Botón de ancla al RSVP (TEXTO ACTUALIZADO) -->
-
+            <!-- Botón de ancla al RSVP -->
             <a href="#rsvp-section" class="block w-full text-center bg-amber-500 text-slate-900 font-bold py-3 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
-
                 RSVP (también lo tienes ahí abajo)
-
             </a>
-
         </div>
-
         <!-- ==================================== -->
-
         <!-- FIN CAJA DE INTRODUCCIÓN -->
-
         <!-- ==================================== -->
-
-
 
         <!-- F2: UBICACIÓN Y CUENTA ATRÁS (ACTUALIZADO) -->
-
         <div class="bg-slate-800 rounded-2xl p-6 mb-6 shadow-lg">
-
             <h2 class="text-3xl font-bold text-amber-400 mb-3">¡Lo importante!</h2>
-
-            <p class="text-2xl font-bold mb-2">Tortillas Etiqueta Negra</p>
-
-            <p class="text-slate-400 mb-4">Plaza de Castilla, 3, 28046 Madrid</p>
-
-            <a href="https://maps.app.goo.gl/ajSh9cjHKgRkWn787" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-blue-600 text-white font-bold py-3 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
-
+            <!-- Texto y link de ubicación actualizados -->
+            <p class="text-2xl font-bold mb-4">Tortillas Etiqueta Negra (Plaza de Castilla)</p>
+            <a href="https://maps.app.goo.gl/PmrxDBLrWScP9SPP6" target="_blank" rel="noopener noreferrer" class="block w-full text-center bg-blue-600 text-white font-bold py-3 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
                 Ver en Google Maps
-
             </a>
-
-
+            <!-- FIN Texto y link de ubicación -->
 
             <!-- CUENTA ATRÁS (MOVIDA AQUÍ) -->
-
-            <div id="countdown" class="flex justify-around text-center mt-6 pt-6 border-t border-slate-700">
-
-                <div>
-
-                    <div id="days" class="text-4xl md:text-5xl font-black">00</div>
-
-                    <div class="text-xs text-slate-400 uppercase">Días</div>
-
+            <div class="mt-6 pt-6 border-t border-slate-700">
+                <!-- Fecha añadida -->
+                <p class="text-lg font-semibold text-center text-slate-300 mb-4">
+                    Sábado 27 de diciembre, 19:00h
+                </p>
+                <div id="countdown" class="flex justify-around text-center">
+                    <div>
+                        <div id="days" class="text-4xl md:text-5xl font-black">00</div>
+                        <div class="text-xs text-slate-400 uppercase">Días</div>
+                    </div>
+                    <div>
+                        <div id="hours" class="text-4xl md:text-5xl font-black">00</div>
+                        <div class="text-xs text-slate-400 uppercase">Horas</div>
+                    </div>
+                    <div>
+                        <div id="minutes" class="text-4xl md:text-5xl font-black">00</div>
+                        <div class="text-xs text-slate-400 uppercase">Minutos</div>
+                    </div>
+                    <div>
+                        <div id="seconds" class="text-4xl md:text-5xl font-black">00</div>
+                        <div class="text-xs text-slate-400 uppercase">Segundos</div>
+                    </div>
                 </div>
-
-                <div>
-
-                    <div id="hours" class="text-4xl md:text-5xl font-black">00</div>
-
-                    <div class="text-xs text-slate-400 uppercase">Horas</div>
-
-                </div>
-
-                <div>
-
-                    <div id="minutes" class="text-4xl md:text-5xl font-black">00</div>
-
-                    <div class="text-xs text-slate-400 uppercase">Minutos</div>
-
-                </div>
-
-                <div>
-
-                    <div id="seconds" class="text-4xl md:text-5xl font-black">00</div>
-
-                    <div class="text-xs text-slate-400 uppercase">Segundos</div>
-
-                </div>
-
             </div>
-
             <!-- FIN CUENTA ATRÁS -->
-
         </div>
-
         <!-- FIN F2 -->
 
-
-
-        <!-- SECCIÓN DINÁMICA (ACTUALIZADO) -->
-
+        <!-- SECCIÓN DINÁMICA -->
         <div id="daily-content" class="bg-slate-800 rounded-2xl p-6 mb-6 shadow-lg hidden">
-
             <h2 class="text-3xl font-bold text-amber-400 mb-3">¡Lo otro!</h2>
-
-           
-
+            
             <!-- D1: Cita -->
-
             <div id="cita-container" class="mb-6 hidden">
-
                 <p class="text-2xl italic font-semibold text-slate-300">"</p>
-
                 <p id="cita-text" class="text-2xl italic font-semibold text-center px-4"></p>
-
                 <p class="text-2xl italic font-semibold text-slate-300 text-right">"</p>
-
             </div>
-
-           
-
-            <!-- D2-D4: Links (BOTONES ACTUALIZADOS) -->
-
+            
+            <!-- D2-D4: Links -->
             <div id="links-container" class="space-y-4">
-
                 <!-- Temardo -->
-
                 <a id="temardo-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden flex items-center bg-green-600 text-white font-bold py-3 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
-
                     <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2m4.238 14.026c-.208.328-.618.438-.945.23-.74-.477-2.903-1.78-4.943-1.78-1.91 0-4.043 1.22-4.743 1.69-.328.208-.738.1-.945-.23-.208-.328-.1-.738.23-.945C6.03 13.68 8.09 12.5 10.5 12.5c2.28 0 4.608 1.09 5.683 1.81.327.208.437.618.23.945M12 4.004c4.411 0 8 3.589 8 8 0 1.902-.66 3.634-1.75 5.032-.204.26-.58.34-.84.135-.82-.64-3.568-2.82-6.41-2.82-2.97 0-5.77 2.29-6.41 2.82-.26.204-.636.126-.84-.135C4.66 15.638 4 13.906 4 12c0-4.411 3.589-7.996 8-7.996m0 1.996c-3.309 0-6 2.691-6 6 0 1.48.54 2.823 1.447 3.864.12.14.33.17.48.06.66-.5 3.03-2.4 5.07-2.4s4.41 1.9 5.07 2.4c.15.11.36.08.48-.06C19.46 14.823 20 13.48 20 12c0-3.309-2.691-6-6-6"></path></svg>
-
                     Temardo
-
                 </a>
-
                 <!-- Memardo -->
-
                 <a id="memardo-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden flex items-center bg-pink-600 text-white font-bold py-3 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
-
                     <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8m-2.5-4.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5m5 0c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5M12 6c-2.36 0-4.4 1.53-5.18 3.65l1.91.7C9.25 9.07 10.51 8 12 8s2.75 1.07 3.27 2.35l1.91-.7C16.4 7.53 14.36 6 12 6"></path></svg>
-
                     Memardo
-
                 </a>
-
                 <!-- Podcardo -->
-
                 <a id="podcardo-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden flex items-center bg-indigo-600 text-white font-bold py-3 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
-
                     <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zM11 14.05V18h-3v2h8v-2h-3v-3.95A5.002 5.002 0 0 1 17 10v-1h-2v1a3 3 0 0 0-6 0v-1H7v1a5.002 5.002 0 0 1 4 4.05z"></path></svg>
-
                     Podcardo
-
                 </a>
-
                 <!-- TVardo -->
-
                 <a id="tvardo-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden flex items-center bg-red-600 text-white font-bold py-3 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
-
                     <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"></path></svg>
-
                     TVardo
-
                 </a>
-
                 <!-- Extra Link (G/H) -->
-
                 <a id="extra-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden flex items-center bg-amber-500 text-slate-900 font-bold py-3 px-5 rounded-lg transition-transform duration-200 hover:scale-105">
-
                     <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24"><path d="M17 7h-4v2h4c1.65 0 3 1.35 3 3s-1.35 3-3 3h-4v2h4c2.76 0 5-2.24 5-5s-2.24-5-5-5zm-6 8H7c-1.65 0-3-1.35-3-3s1.35-3 3-3h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-2zm-3-4h8v2H8v-2z"></path></svg>
-
                     <span>Extra</span> <!-- Texto dinámico desde Columna H -->
-
                 </a>
-
             </div>
-
-
 
             <!-- Mensaje por defecto si no hay contenido -->
-
             <div id="default-message">
-
                 <p class="text-slate-400 text-center">La cuenta atrás sigue en marcha... ¡vuelve mañana para ver el contenido del día!</p>
-
             </div>
-
         </div>
-
         <!-- FIN SECCIÓN DINÁMICA -->
 
-
-
         <!-- F3: RSVP (Añadido ID de ancla) -->
-
         <div id="rsvp-section" class="bg-slate-800 rounded-2xl p-6 mb-6 shadow-lg">
-
             <h2 class="text-3xl font-bold text-amber-400 mb-6">RSVP - Confirmar Asistencia</h2>
-
             <div class="iframe-container rounded-lg overflow-hidden">
-
                 <!-- TU IFRAME DE GOOGLE FORMS -->
-
                 <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeyeMGHOU3OCPhiOpmWhqsJYU_Yj_nS4gEfOrsymfRp5AmsFQ/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
-
             </div>
-
         </div>
-
         <!-- FIN F3 -->
 
-
-
         <footer class="text-center mt-12 mb-6">
-
             <p class="text-slate-500">Un pequeño experimento web para un gran cumpleaños.</p>
-
         </footer>
-
     </div>
 
-
-
     <!-- ==================================== -->
-
-    <!-- JAVASCRIPT (ACTUALIZADO) -->
-
+    <!-- JAVASCRIPT (El mismo de antes) -->
     <!-- ==================================== -->
-
     <script>
-
         // --- LÓGICA DE LA CUENTA ATRÁS ---
-
         const countdownElement = document.getElementById('countdown');
-
         const daysEl = document.getElementById('days');
-
         const hoursEl = document.getElementById('hours');
-
         const minutesEl = document.getElementById('minutes');
-
         const secondsEl = document.getElementById('seconds');
-
         // IMPORTANTE: La fecha de tu cumple (2025-12-27 a las 19:00)
-
-        const eventoFecha = new Date("2025-12-27T19:00:00");
-
-
+        const eventoFecha = new Date("2025-12-27T19:00:00"); 
 
         function updateCountdown() {
-
             const ahora = new Date();
-
             const diff = eventoFecha - ahora;
 
-
-
             if (diff <= 0) {
-
                 // Modificado para que quepa en la nueva caja
-
                 countdownElement.innerHTML = "<div class='text-2xl font-bold text-amber-400 text-center w-full'>¡LA FIESTA HA COMENZADO!</div>";
-
                 clearInterval(countdownInterval);
-
                 return;
-
             }
 
-
-
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
             const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
             const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-
-
             daysEl.innerText = d.toString().padStart(2, '0');
-
             hoursEl.innerText = h.toString().padStart(2, '0');
-
             minutesEl.innerText = m.toString().padStart(2, '0');
-
             secondsEl.innerText = s.toString().padStart(2, '0');
-
         }
 
-
-
         const countdownInterval = setInterval(updateCountdown, 1000);
-
         updateCountdown(); // Llamada inicial
-
-
 
         // --- LÓGICA DE CONTENIDO DIARIO (GOOGLE SHEETS) ---
 
-
-
         // 1. URL de tu Hoja de Cálculo (publicada como CSV)
-
         const URL_HOJA_CALCULO = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRO6dL6ivJT72hUEfMGtxhOmM02vb_Z31TvGY1WD7mrBDQIBH9b4Ni35bi8iUNEuO3mRFYM8l_8YI0I/pub?gid=0&single=true&output=csv";
 
-
-
-        // 2. Elementos del DOM (ACTUALIZADOS)
-
+        // 2. Elementos del DOM
         const dailyContentEl = document.getElementById('daily-content');
-
         const citaContainer = document.getElementById('cita-container');
-
         const citaText = document.getElementById('cita-text');
-
-       
-
-        // Nuevos botones
-
+        
         const temardoLink = document.getElementById('temardo-link');
-
         const memardoLink = document.getElementById('memardo-link');
-
         const podcardoLink = document.getElementById('podcardo-link');
-
         const tvardoLink = document.getElementById('tvardo-link');
-
-        const extraLink = document.getElementById('extra-link'); // <-- NUEVO
-
-       
-
+        const extraLink = document.getElementById('extra-link');
+        
         const defaultMessage = document.getElementById('default-message');
-
         const linksContainer = document.getElementById('links-container');
 
-
-
         // 3. Función para obtener la fecha de hoy en formato DD/MM/YY (con lógica de 3AM en Madrid)
-
         function getHoy() {
-
             const now = new Date();
-
             // Zona horaria de España
-
             const options = { timeZone: 'Europe/Madrid', hour: '2-digit', hour12: false };
-
             const timeFormatter = new Intl.DateTimeFormat('en-US', options);
-
             const currentHourInMadrid = parseInt(timeFormatter.format(now), 10);
-
-           
-
+            
             // Usamos una fecha base que podemos modificar
-
             const dateToUse = new Date();
-
-           
-
+            
             // Si es antes de las 3 AM en Madrid, usa la fecha de ayer
-
             if (currentHourInMadrid < 3) {
-
                 dateToUse.setDate(dateToUse.getDate() - 1);
-
             }
 
-
-
             // Formatea la fecha (sea hoy o ayer)
-
             const dd = String(dateToUse.getDate()).padStart(2, '0');
-
             const mm = String(dateToUse.getMonth() + 1).padStart(2, '0'); // Enero es 0
-
             const yy = String(dateToUse.getFullYear()).slice(-2);
-
-           
-
+            
             return `${dd}/${mm}/${yy}`;
-
         }
 
-
-
-        // 4. Función principal para cargar y mostrar datos (ACTUALIZADA con Lógica de Fallback)
-
+        // 4. Función principal para cargar y mostrar datos (con Lógica de Fallback)
         function cargarContenidoDiario() {
-
             const fechaHoy = getHoy();
-
-           
-
+            
             Papa.parse(URL_HOJA_CALCULO, {
-
                 download: true,
-
                 header: true, // ¡Importante! Lee la Fila 1 como encabezados
-
                 skipEmptyLines: true,
-
                 complete: function(results) {
-
                     const datos = results.data;
-
-                   
-
+                    
                     // Busca el índice de la fila que coincida con la fecha de hoy
-
                     const indiceHoy = datos.findIndex(fila => fila.Fecha === fechaHoy);
 
-
-
                     if (indiceHoy > -1) { // ¡Hoy se encontró en la hoja!
-
                         let contenidoEncontrado = false;
 
-
-
-                        // --- NUEVA LÓGICA DE FALLBACK ---
-
-                        // Función auxiliar para obtener el valor más reciente de una columna
-
+                        // --- LÓGICA DE FALLBACK ---
                         const getValorReciente = (columna) => {
-
-                            // Itera hacia atrás desde el índice de hoy
-
                             for (let i = indiceHoy; i >= 0; i--) {
-
-                                // Asegura que la fila y la columna existan y no estén vacías
-
                                 if (datos[i] && datos[i][columna] && datos[i][columna].trim() !== "") {
-
-                                    return datos[i][columna]; // Devuelve el primer valor no vacío encontrado
-
+                                    return datos[i][columna];
                                 }
-
                             }
-
-                            return null; // No se encontró ningún valor en ninguna fila anterior
-
+                            return null;
                         };
-
                         // --- FIN LÓGICA DE FALLBACK ---
 
-
-
                         // Obtener valores usando la nueva lógica de fallback
-
-                        // Estas son las columnas de tu hoja de cálculo
-
                         const cita = getValorReciente('Cita');
-
                         const temardo = getValorReciente('Temardo');
-
-        const memardo = getValorReciente('Memardo');
-
-        const podcardo = getValorReciente('Podcardo');
-
-        const tvardo = getValorReciente('TVardo');
-
-        const extralink = getValorReciente('Extralink');
-
-        const extratexto = getValorReciente('Extratexto');
-
-
+                        const memardo = getValorReciente('Memardo');
+                        const podcardo = getValorReciente('Podcardo');
+                        const tvardo = getValorReciente('TVardo');
+                        const extralink = getValorReciente('Extralink');
+                        const extratexto = getValorReciente('Extratexto');
 
                         // --- POBLAR LA UI CON LOS VALORES OBTENIDOS ---
-
-                       
-
-                        // Mostrar Cita
-
+                        
                         if (cita) {
-
                             citaText.innerText = cita;
-
                             citaContainer.classList.remove('hidden');
-
                             contenidoEncontrado = true;
-
                         }
-
-
-
-                        // El botón "Temardo" (Columna C)
 
                         if (temardo) {
-
                             temardoLink.href = temardo;
-
                             temardoLink.classList.remove('hidden');
-
                             contenidoEncontrado = true;
-
                         }
-
-
-
-                        // El botón "Memardo" (Columna D)
 
                         if (memardo) {
-
                             memardoLink.href = memardo;
-
                             memardoLink.classList.remove('hidden');
-
                             contenidoEncontrado = true;
-
                         }
-
-
-
-                        // El botón "Podcardo" (Columna E)
 
                         if (podcardo) {
-
                             podcardoLink.href = podcardo;
-
                             podcardoLink.classList.remove('hidden');
-
                             contenidoEncontrado = true;
-
                         }
-
-
-
-                        // El botón "TVardo" (Columna F)
 
                         if (tvardo) {
-
                             tvardoLink.href = tvardo;
-
                             tvardoLink.classList.remove('hidden');
-
                             contenidoEncontrado = true;
-
                         }
-
-
-
-                        // NUEVO BOTÓN (Extralink / Extratexto - Columnas G y H)
 
                         if (extralink) {
-
                             extraLink.href = extralink;
-
-                            // Usa el texto de Extratexto (H), o "Extra" si está vacío
-
                             const textoBoton = (extratexto && extratexto.trim() !== "") ? extratexto : 'Extra';
-
                             extraLink.querySelector('span').innerText = textoBoton;
-
                             extraLink.classList.remove('hidden');
-
                             contenidoEncontrado = true;
-
                         }
 
-
-
-                        // Mostrar la caja de contenido diario
-
                         dailyContentEl.classList.remove('hidden');
-
-
 
                         if (contenidoEncontrado) {
-
-                            // Si se encontró al menos una cosa, oculta el mensaje por defecto
-
                             defaultMessage.classList.add('hidden');
-
                         } else {
-
-                            // Si incluso con el fallback no hay nada, muestra el mensaje
-
                             defaultMessage.classList.remove('hidden');
-
                         }
 
-
-
                     } else {
-
-                        // Si la fecha de HOY no está en la hoja, muestra el mensaje por defecto
-
+                        // Si la fecha de HOY no está en la hoja...
                         console.warn(`Fecha ${fechaHoy} no encontrada en la hoja de cálculo.`);
-
                         dailyContentEl.classList.remove('hidden');
-
                         defaultMessage.classList.remove('hidden');
-
                     }
-
                 },
-
                 error: function(err) {
-
                     console.error("Error al leer el CSV:", err);
-
                     dailyContentEl.classList.remove('hidden');
-
                     defaultMessage.classList.remove('hidden');
-
                 }
-
             });
-
         }
 
-
-
         // 5. Iniciar la carga del contenido diario
-
         cargarContenidoDiario();
 
-
-
     </script>
-
 </body>
-
 </html>
