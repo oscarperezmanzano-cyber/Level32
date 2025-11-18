@@ -4,13 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario Adviento - LEVEL 2⁵</title>
+    
+    <!-- FAVICON con truco de versión (?v=2) -->
+    <link rel="shortcut icon" href="favicon.ico?v=2" type="image/x-icon">
+    <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
+    
+    <!-- Carga de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <!-- Iconos Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script> 
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        /* ESTILOS DE EMERGENCIA (FALLBACK) */
+        /* Esto asegura que se vea oscuro y ordenado si falla Tailwind */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #0f172a; /* Slate 900 */
+            color: #e2e8f0; /* Slate 200 */
+            margin: 0;
+        }
+        a { text-decoration: none; color: inherit; }
+        svg { max-width: 24px; max-height: 24px; vertical-align: middle; }
+        .max-w-4xl { max-width: 56rem; margin: 0 auto; }
+        .grid { display: grid; gap: 1.5rem; }
+        @media (min-width: 768px) { .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (min-width: 1024px) { .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-200 py-8 px-4 md:px-8 min-h-screen">
@@ -18,11 +38,11 @@
     <div class="max-w-4xl mx-auto">
         
         <!-- Header con botón de volver -->
-        <div class="flex items-center justify-between mb-8">
-            <a href="index.html" class="flex items-center text-amber-400 hover:text-amber-300 transition-colors group">
+        <div class="flex items-center justify-between mb-8" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <a href="index.html" class="flex items-center text-amber-400 hover:text-amber-300 transition-colors group" style="color: #fbbf24; display: flex; align-items: center;">
                 <i data-lucide="arrow-left" class="w-5 h-5 mr-2 transition-transform group-hover:-translate-x-1"></i> Volver
             </a>
-            <h1 class="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">
+            <h1 class="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500" style="background-image: linear-gradient(to right, #fbbf24, #f97316); -webkit-background-clip: text; color: transparent; font-size: 1.5rem; font-weight: 900;">
                 Calendario LEVEL 2⁵
             </h1>
         </div>
@@ -81,14 +101,34 @@
 
                 grid.innerHTML = ''; // Limpiar mensaje de carga
 
-                // Filtrar filas vacías o sin fecha válida
+                // Filtrar filas válidas
                 const filasValidas = datos.filter(fila => fila.Fecha && parseFecha(fila.Fecha));
 
-                // MEJORA UX: Invertir orden para ver lo más reciente primero
-                filasValidas.reverse(); 
+                // Separar en pasados (desbloqueados) y futuros (bloqueados)
+                const pasados = [];
+                const futuros = [];
 
                 filasValidas.forEach(fila => {
-                    const fechaFila = parseFecha(fila.Fecha);
+                    const fecha = parseFecha(fila.Fecha);
+                    if (fecha <= fechaLimite) {
+                        pasados.push({ data: fila, date: fecha });
+                    } else {
+                        futuros.push({ data: fila, date: fecha });
+                    }
+                });
+
+                // Ordenar PASADOS: De más reciente a más antiguo (Hoy primero)
+                pasados.sort((a, b) => b.date - a.date);
+
+                // Ordenar FUTUROS: De más cercano a más lejano (Mañana primero)
+                futuros.sort((a, b) => a.date - b.date);
+
+                // Combinar listas: Primero los desbloqueados, luego los bloqueados
+                const listaFinal = [...pasados, ...futuros];
+
+                listaFinal.forEach(item => {
+                    const fila = item.data;
+                    const fechaFila = item.date;
                     const esPasado = fechaFila <= fechaLimite;
                     const esHoy = fechaFila.getTime() === fechaLimite.getTime();
 
@@ -96,12 +136,25 @@
                     const card = document.createElement('div');
                     card.className = `rounded-xl p-5 border transition-all duration-300 ${esPasado 
                         ? 'bg-slate-800 border-slate-700 shadow-lg hover:border-amber-500/50 hover:shadow-amber-500/10' 
-                        : 'bg-slate-900 border-slate-800 opacity-60'}`;
+                        : 'bg-slate-900 border-slate-800 opacity-40'}`; // Opacidad bajada para bloqueados
+                    
+                    // Fallback estilo inline (Para modo incógnito/fallo de CSS)
+                    card.style.padding = "1.25rem";
+                    card.style.borderRadius = "0.75rem";
+                    card.style.marginBottom = "1rem";
+                    
+                    if (esPasado) {
+                         card.style.backgroundColor = "#1e293b"; // slate-800
+                         card.style.border = "1px solid #334155";
+                    } else {
+                         card.style.opacity = "0.5";
+                         card.style.border = "1px dashed #334155";
+                    }
 
                     // Contenido HTML de la tarjeta
                     let htmlContent = `
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="font-bold text-lg ${esHoy ? 'text-amber-400' : 'text-slate-400'}">
+                        <div class="flex justify-between items-start mb-4" style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <span class="font-bold text-lg ${esHoy ? 'text-amber-400' : (esPasado ? 'text-slate-200' : 'text-slate-500')}" style="${esHoy ? 'color: #fbbf24;' : ''}">
                                 ${fila.Fecha} ${esHoy ? '(Hoy)' : ''}
                             </span>
                             ${!esPasado ? '<i data-lucide="lock" class="w-4 h-4 text-slate-600"></i>' : ''}
@@ -112,26 +165,27 @@
                         // CITA
                         if (fila.Cita) {
                             htmlContent += `
-                                <div class="mb-4">
+                                <div class="mb-4" style="margin-bottom: 1rem;">
                                     <p class="italic text-slate-300 text-sm">"${fila.Cita}"</p>
                                 </div>
                             `;
                         }
 
                         // BOTONES (Iconos pequeños)
-                        htmlContent += `<div class="flex flex-wrap gap-2 mt-auto">`;
+                        htmlContent += `<div class="flex flex-wrap gap-2 mt-auto" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto;">`;
 
-                        if (fila.Temardo) htmlContent += botonMini(fila.Temardo, 'Temardo', 'bg-green-600');
-                        if (fila.Memardo) htmlContent += botonMini(fila.Memardo, 'Memardo', 'bg-pink-600');
-                        if (fila.Podcardo) htmlContent += botonMini(fila.Podcardo, 'Podcardo', 'bg-indigo-600');
-                        if (fila.TVardo) htmlContent += botonMini(fila.TVardo, 'TVardo', 'bg-red-600');
-                        if (fila.Extralink) htmlContent += botonMini(fila.Extralink, fila.Extratexto || 'Extra', 'bg-amber-600');
+                        // Colores: Temardo(Green), Memardo(Pink), Podcardo(Indigo), TVardo(Red), Extra(Amber)
+                        if (fila.Temardo) htmlContent += botonMini(fila.Temardo, 'Temardo', 'bg-green-600', '#16a34a');
+                        if (fila.Memardo) htmlContent += botonMini(fila.Memardo, 'Memardo', 'bg-pink-600', '#db2777');
+                        if (fila.Podcardo) htmlContent += botonMini(fila.Podcardo, 'Podcardo', 'bg-indigo-600', '#4f46e5');
+                        if (fila.TVardo) htmlContent += botonMini(fila.TVardo, 'TVardo', 'bg-red-600', '#dc2626');
+                        if (fila.Extralink) htmlContent += botonMini(fila.Extralink, fila.Extratexto || 'Extra', 'bg-amber-600', '#d97706');
 
                         htmlContent += `</div>`;
                     } else {
                         // Contenido bloqueado
                         htmlContent += `
-                            <div class="h-24 flex items-center justify-center text-slate-600 bg-slate-800/50 rounded-lg border border-dashed border-slate-700">
+                            <div class="h-24 flex items-center justify-center text-slate-600 bg-slate-800/50 rounded-lg border border-dashed border-slate-700" style="height: 6rem; display: flex; align-items: center; justify-content: center;">
                                 <span class="text-sm">Próximamente</span>
                             </div>
                         `;
@@ -150,10 +204,10 @@
             }
         });
 
-        // MEJORA DE SEGURIDAD: Añadido rel="noopener noreferrer"
-        function botonMini(link, texto, colorClass) {
+        // MEJORA DE SEGURIDAD: Añadido rel="noopener noreferrer" y estilos inline fallback
+        function botonMini(link, texto, colorClass, hexColor) {
             return `
-                <a href="${link}" target="_blank" rel="noopener noreferrer" class="${colorClass} text-white text-xs font-bold px-3 py-1.5 rounded-full hover:opacity-90 hover:scale-105 transform transition-all mb-1 shadow-md">
+                <a href="${link}" target="_blank" rel="noopener noreferrer" class="${colorClass} text-white text-xs font-bold px-3 py-1.5 rounded-full hover:opacity-90 hover:scale-105 transform transition-all mb-1 shadow-md" style="background-color: ${hexColor}; color: white; padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: bold; text-decoration: none; display: inline-block; margin-bottom: 4px;">
                     ${texto}
                 </a>
             `;
