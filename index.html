@@ -12,10 +12,16 @@
     <!-- Metaetiquetas para compartir en WhatsApp (Open Graph) -->
     <meta property="og:title" content="LEVEL 2⁵ - La Fiesta">
     <meta property="og:description" content="Cuenta atrás, ubicación, calendario de adviento y RSVP. ¡No faltes!">
-    <!-- CAMBIO AQUÍ: Ahora apunta a 'preview.jpg' -->
-    <meta property="og:image" content="https://op-level32.netlify.app/preview.jpg">
+    
+    <!-- TRUCO: Usamos un nombre nuevo 'invitacion.jpg' para forzar a WhatsApp a recargar -->
+    <meta property="og:image" content="https://op-level32.netlify.app/invitacion.jpg">
+    <meta property="og:image:secure_url" content="https://op-level32.netlify.app/invitacion.jpg">
+    <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://op-level32.netlify.app/">
     
     <!-- Carga de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -140,7 +146,7 @@
                 </a>
             </div>
             
-            <!-- TÍTULO DEL DÍA (OCULTO TEMPORALMENTE POR PETICIÓN) -->
+            <!-- TÍTULO DEL DÍA (OCULTO TEMPORALMENTE) -->
             <!-- 
             <div id="titulo-dia-container" class="mb-4 hidden">
                 <h3 id="titulo-dia-text" class="text-xl font-bold text-white text-center uppercase tracking-wide" style="letter-spacing: 0.05em;"></h3>
@@ -231,9 +237,9 @@
         const defaultMessage = document.getElementById('default-message');
         const citaContainer = document.getElementById('cita-container');
         const citaText = document.getElementById('cita-text');
-        // Referencias al título
-        // const tituloDiaContainer = document.getElementById('titulo-dia-container');
-        // const tituloDiaText = document.getElementById('titulo-dia-text');
+        // Referencias al título (ocultas pero listas)
+        const tituloDiaContainer = document.getElementById('titulo-dia-container');
+        const tituloDiaText = document.getElementById('titulo-dia-text');
         const botones = {
             'Temardo': document.getElementById('temardo-link'),
             'Memardo': document.getElementById('memardo-link'),
@@ -274,7 +280,7 @@
                             return null;
                         };
 
-                        // Título del día (COMENTADO PARA QUE NO SE MUESTRE AÚN)
+                        // Título del día (COMENTADO TEMPORALMENTE)
                         /*
                         const titulo = getValorReciente('Titulo');
                         if (titulo) {
