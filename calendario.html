@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario Adviento - LEVEL 2⁵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script> 
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 py-8 px-4 md:px-8 min-h-screen">
+
+    <div class="max-w-4xl mx-auto">
+        
+        <!-- Header con botón de volver -->
+        <div class="flex items-center justify-between mb-8">
+            <a href="index.html" class="flex items-center text-amber-400 hover:text-amber-300 transition-colors group">
+                <i data-lucide="arrow-left" class="w-5 h-5 mr-2 transition-transform group-hover:-translate-x-1"></i> Volver
+            </a>
+            <h1 class="text-2xl md:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">
+                Calendario LEVEL 2⁵
+            </h1>
+        </div>
+
+        <!-- Grid del Calendario -->
+        <div id="calendar-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Aquí se inyectarán las tarjetas con JS -->
+            <div class="col-span-full text-center text-slate-500 py-12 animate-pulse">
+                Cargando el archivo histórico...
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const URL_HOJA_CALCULO = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRO6dL6ivJT72hUEfMGtxhOmM02vb_Z31TvGY1WD7mrBDQIBH9b4Ni35bi8iUNEuO3mRFYM8l_8YI0I/pub?gid=0&single=true&output=csv";
+
+        // Función para parsear fecha DD/MM/YY a objeto Date
+        function parseFecha(fechaStr) {
+            if (!fechaStr) return null;
+            const partes = fechaStr.split('/');
+            if (partes.length !== 3) return null;
+            const dia = parseInt(partes[0], 10);
+            const mes = parseInt(partes[1], 10) - 1; // Meses en JS son 0-11
+            const anio = 2000 + parseInt(partes[2], 10); // Asumimos siglo 21
+            return new Date(anio, mes, dia);
+        }
+
+        // Obtener fecha actual (ajustada a 3AM España)
+        function getFechaReferencia() {
+            const now = new Date();
+            const options = { timeZone: 'Europe/Madrid', hour: '2-digit', hour12: false };
+            const timeFormatter = new Intl.DateTimeFormat('en-US', options);
+            const currentHourInMadrid = parseInt(timeFormatter.format(now), 10);
+            
+            const dateToUse = new Date();
+            // Si es antes de las 3 AM, cuenta como "ayer" para desbloquear contenido
+            if (currentHourInMadrid < 3) {
+                dateToUse.setDate(dateToUse.getDate() - 1);
+            }
+            // Resetear horas para comparar solo fechas
+            dateToUse.setHours(0, 0, 0, 0);
+            return dateToUse;
+        }
+
+        Papa.parse(URL_HOJA_CALCULO, {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            complete: function(results) {
+                const datos = results.data;
+                const grid = document.getElementById('calendar-grid');
+                const fechaLimite = getFechaReferencia();
+
+                grid.innerHTML = ''; // Limpiar mensaje de carga
+
+                // Filtrar filas vacías o sin fecha válida
+                const filasValidas = datos.filter(fila => fila.Fecha && parseFecha(fila.Fecha));
+
+                // MEJORA UX: Invertir orden para ver lo más reciente primero
+                filasValidas.reverse(); 
+
+                filasValidas.forEach(fila => {
+                    const fechaFila = parseFecha(fila.Fecha);
+                    const esPasado = fechaFila <= fechaLimite;
+                    const esHoy = fechaFila.getTime() === fechaLimite.getTime();
+
+                    // Crear tarjeta
+                    const card = document.createElement('div');
+                    card.className = `rounded-xl p-5 border transition-all duration-300 ${esPasado 
+                        ? 'bg-slate-800 border-slate-700 shadow-lg hover:border-amber-500/50 hover:shadow-amber-500/10' 
+                        : 'bg-slate-900 border-slate-800 opacity-60'}`;
+
+                    // Contenido HTML de la tarjeta
+                    let htmlContent = `
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="font-bold text-lg ${esHoy ? 'text-amber-400' : 'text-slate-400'}">
+                                ${fila.Fecha} ${esHoy ? '(Hoy)' : ''}
+                            </span>
+                            ${!esPasado ? '<i data-lucide="lock" class="w-4 h-4 text-slate-600"></i>' : ''}
+                        </div>
+                    `;
+
+                    if (esPasado) {
+                        // CITA
+                        if (fila.Cita) {
+                            htmlContent += `
+                                <div class="mb-4">
+                                    <p class="italic text-slate-300 text-sm">"${fila.Cita}"</p>
+                                </div>
+                            `;
+                        }
+
+                        // BOTONES (Iconos pequeños)
+                        htmlContent += `<div class="flex flex-wrap gap-2 mt-auto">`;
+
+                        if (fila.Temardo) htmlContent += botonMini(fila.Temardo, 'Temardo', 'bg-green-600');
+                        if (fila.Memardo) htmlContent += botonMini(fila.Memardo, 'Memardo', 'bg-pink-600');
+                        if (fila.Podcardo) htmlContent += botonMini(fila.Podcardo, 'Podcardo', 'bg-indigo-600');
+                        if (fila.TVardo) htmlContent += botonMini(fila.TVardo, 'TVardo', 'bg-red-600');
+                        if (fila.Extralink) htmlContent += botonMini(fila.Extralink, fila.Extratexto || 'Extra', 'bg-amber-600');
+
+                        htmlContent += `</div>`;
+                    } else {
+                        // Contenido bloqueado
+                        htmlContent += `
+                            <div class="h-24 flex items-center justify-center text-slate-600 bg-slate-800/50 rounded-lg border border-dashed border-slate-700">
+                                <span class="text-sm">Próximamente</span>
+                            </div>
+                        `;
+                    }
+
+                    card.innerHTML = htmlContent;
+                    grid.appendChild(card);
+                });
+
+                // Reinicializar iconos creados dinámicamente
+                lucide.createIcons();
+            },
+            error: function(err) {
+                console.error("Error CSV", err);
+                document.getElementById('calendar-grid').innerHTML = '<p class="text-red-400">Error cargando datos.</p>';
+            }
+        });
+
+        // MEJORA DE SEGURIDAD: Añadido rel="noopener noreferrer"
+        function botonMini(link, texto, colorClass) {
+            return `
+                <a href="${link}" target="_blank" rel="noopener noreferrer" class="${colorClass} text-white text-xs font-bold px-3 py-1.5 rounded-full hover:opacity-90 hover:scale-105 transform transition-all mb-1 shadow-md">
+                    ${texto}
+                </a>
+            `;
+        }
+    </script>
+</body>
+</html>
