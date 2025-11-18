@@ -12,8 +12,8 @@
     <!-- Metaetiquetas para compartir en WhatsApp (Open Graph) -->
     <meta property="og:title" content="LEVEL 2⁵ - La Fiesta">
     <meta property="og:description" content="Cuenta atrás, ubicación, calendario de adviento y RSVP. ¡No faltes!">
-    <!-- CAMBIO AQUÍ: Ahora apunta a 'preview.jpeg' -->
-    <meta property="og:image" content="preview.jpeg">
+    <!-- CAMBIO AQUÍ: Ahora apunta a 'preview.jpg' -->
+    <meta property="og:image" content="https://op-level32.netlify.app/preview.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     
@@ -140,6 +140,13 @@
                 </a>
             </div>
             
+            <!-- TÍTULO DEL DÍA (OCULTO TEMPORALMENTE POR PETICIÓN) -->
+            <!-- 
+            <div id="titulo-dia-container" class="mb-4 hidden">
+                <h3 id="titulo-dia-text" class="text-xl font-bold text-white text-center uppercase tracking-wide" style="letter-spacing: 0.05em;"></h3>
+            </div>
+            -->
+
             <!-- Cita -->
             <div id="cita-container" class="mb-6 hidden">
                 <p class="text-2xl italic font-semibold text-slate-500/50 font-serif leading-none">"</p>
@@ -149,7 +156,6 @@
             
             <!-- Botones -->
             <div id="links-container" class="space-y-3">
-                <!-- Se mantienen tus botones originales, el CSS global arreglará los iconos -->
                 <a id="temardo-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden flex items-center bg-green-600 text-white font-bold py-3 px-5 rounded-lg transition-all duration-200 hover:scale-105 group" style="background-color: #16a34a; color: white; padding: 12px; border-radius: 8px; display: flex; align-items: center; margin-bottom: 10px;">
                     <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2m4.238 14.026c-.208.328-.618.438-.945.23-.74-.477-2.903-1.78-4.943-1.78-1.91 0-4.043 1.22-4.743 1.69-.328.208-.738.1-.945-.23-.208-.328-.1-.738.23-.945C6.03 13.68 8.09 12.5 10.5 12.5c2.28 0 4.608 1.09 5.683 1.81.327.208.437.618.23.945M12 4.004c4.411 0 8 3.589 8 8 0 1.902-.66 3.634-1.75 5.032-.204.26-.58.34-.84.135-.82-.64-3.568-2.82-6.41-2.82-2.97 0-5.77 2.29-6.41 2.82-.26.204-.636.126-.84-.135C4.66 15.638 4 13.906 4 12c0-4.411 3.589-7.996 8-7.996m0 1.996c-3.309 0-6 2.691-6 6 0 1.48.54 2.823 1.447 3.864.12.14.33.17.48.06.66-.5 3.03-2.4 5.07-2.4s4.41 1.9 5.07 2.4c.15.11.36.08.48-.06C19.46 14.823 20 13.48 20 12c0-3.309-2.691-6-6-6"></path></svg>
                     Temardo
@@ -192,7 +198,7 @@
 
     </div>
 
-    <!-- SCRIPTS: Lógica original intacta -->
+    <!-- SCRIPTS -->
     <script>
         // 1. CUENTA ATRÁS
         const countdownDiv = document.getElementById('countdown');
@@ -225,6 +231,9 @@
         const defaultMessage = document.getElementById('default-message');
         const citaContainer = document.getElementById('cita-container');
         const citaText = document.getElementById('cita-text');
+        // Referencias al título
+        // const tituloDiaContainer = document.getElementById('titulo-dia-container');
+        // const tituloDiaText = document.getElementById('titulo-dia-text');
         const botones = {
             'Temardo': document.getElementById('temardo-link'),
             'Memardo': document.getElementById('memardo-link'),
@@ -264,6 +273,15 @@
                             }
                             return null;
                         };
+
+                        // Título del día (COMENTADO PARA QUE NO SE MUESTRE AÚN)
+                        /*
+                        const titulo = getValorReciente('Titulo');
+                        if (titulo) {
+                            tituloDiaText.innerText = titulo;
+                            tituloDiaContainer.classList.remove('hidden');
+                        }
+                        */
 
                         const cita = getValorReciente('Cita');
                         if (cita) {

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario Adviento - LEVEL 2⁵</title>
     
-    <!-- FAVICON con truco de versión (?v=2) -->
-    <link rel="shortcut icon" href="favicon.ico?v=2" type="image/x-icon">
-    <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     
     <!-- Carga de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -162,6 +162,13 @@
                     `;
 
                     if (esPasado) {
+                        // TÍTULO DEL DÍA (OCULTO/COMENTADO TEMPORALMENTE)
+                        /*
+                        if (fila.Titulo) {
+                            htmlContent += `<div class="mb-2"><h3 class="text-amber-400 font-bold uppercase text-sm tracking-wider" style="color: #fbbf24; letter-spacing: 0.05em; font-weight: bold;">${fila.Titulo}</h3></div>`;
+                        }
+                        */
+
                         // CITA
                         if (fila.Cita) {
                             htmlContent += `
@@ -174,7 +181,6 @@
                         // BOTONES (Iconos pequeños)
                         htmlContent += `<div class="flex flex-wrap gap-2 mt-auto" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto;">`;
 
-                        // Colores: Temardo(Green), Memardo(Pink), Podcardo(Indigo), TVardo(Red), Extra(Amber)
                         if (fila.Temardo) htmlContent += botonMini(fila.Temardo, 'Temardo', 'bg-green-600', '#16a34a');
                         if (fila.Memardo) htmlContent += botonMini(fila.Memardo, 'Memardo', 'bg-pink-600', '#db2777');
                         if (fila.Podcardo) htmlContent += botonMini(fila.Podcardo, 'Podcardo', 'bg-indigo-600', '#4f46e5');
